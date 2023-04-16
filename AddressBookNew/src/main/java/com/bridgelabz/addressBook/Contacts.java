@@ -1,9 +1,11 @@
 package com.bridgelabz.addressBook;
 
 public class Contacts {
+
     private String firstName, lastName, address, city, state, email;
     private int zip;
     private long phoneNumber;
+
 
     public void Contact(String firstName, String lastName, String address, String city, String state, int zip,
                         long phoneNumber, String email) {
@@ -87,6 +89,11 @@ public class Contacts {
 
         this.phoneNumber = phoneNumber;
     }
+
+
+    @Override
+    public String toString() {
+
+        return " name " + firstName + " " + " lastName " + lastName + " " + " Zip " + zip + " " + " city " + city + " " + " phoneNumber " + phoneNumber + " " + "Email " + email + "";
+    }
 }
-
-
