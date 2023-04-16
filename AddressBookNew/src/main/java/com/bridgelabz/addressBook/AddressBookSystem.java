@@ -5,51 +5,77 @@ import java.util.*;
 
 public class AddressBookSystem extends Contacts {
 
-        Contacts contacts = new Contacts();
-        Scanner scanner = new Scanner(System.in);
-        List<Contacts> Contacts = new ArrayList<Contacts>();
-        Map<String, List<Contacts>> addressBooks = new HashMap<>();
 
-        public void addAddressBook() {
-            System.out.println("Enter the name of the new address book:");
-            String name = scanner.nextLine();
-            addressBooks.put(name, new ArrayList<Contacts>());
-            System.out.println("Address book '" + name + "' added successfully.");
+    Contacts contacts = new Contacts();
+    Scanner scanner = new Scanner(System.in);
+    List<Contacts> Contacts = new ArrayList<Contacts>();
+    Map<String, List<Contacts>> addressBooks = new HashMap<>();
+
+    public void addAddressBook() {
+        System.out.println("Enter the name of the new address book:");
+        String name = scanner.nextLine();
+        addressBooks.put(name, new ArrayList<Contacts>());
+        System.out.println("Address book '" + name + "' added successfully.");
+    }
+
+    public void displayAddressBooks() {
+        if (addressBooks.isEmpty()) {
+            System.out.println("No address books found.");
+            return;
         }
-
-        public void displayAddressBooks() {
-            if (addressBooks.isEmpty()) {
-                System.out.println("No address books found.");
-                return;
-            }
-            System.out.println("List of address books:");
-            for (String name : addressBooks.keySet()) {
-                System.out.println(name);
-            }
+        System.out.println("List of address books:");
+        for (String name : addressBooks.keySet()) {
+            System.out.println(name);
         }
+    }
 
-        public void openAddressBook() {
-            System.out.println("Enter the name of the address book you want to open:");
-            String name = scanner.nextLine();
-            List<Contacts> addressBook = addressBooks.get(name);
-            if (addressBook == null) {
-                System.out.println("No address book found with the given name.");
-                return;
-            }
+    public void openAddressBook() {
+        System.out.println("Enter the name of the address book you want to open:");
+        String name = scanner.nextLine();
+        List<Contacts> addressBook = addressBooks.get(name);
+        if (addressBook == null) {
+            System.out.println("No address book found with the given name.");
+            return;
         }
+    }
 
-        public void addContacts() {
-            boolean addingContacts = true;
-            while (addingContacts) {
-                Contacts contacts = new Contacts();
-                System.out.println("Enter First Name : ");
-                String firstName = scanner.nextLine();
-                contacts.setFirstName(firstName);
+    public void addContacts() {
+        boolean addingContacts = true;
+        while (addingContacts) {
+            Contacts contacts = new Contacts();
+            System.out.println("Enter First Name : ");
+            String firstName = scanner.nextLine();
+            contacts.setFirstName(firstName);
 
-                System.out.println("Enter Last Name : ");
-                String lastName = scanner.nextLine();
-                contacts.setLastName(lastName);
+            System.out.println("Enter Last Name : ");
+            String lastName = scanner.nextLine();
+            contacts.setLastName(lastName);
 
+            // Check if a contact with the same first name and last name already exists
+            boolean contactExists = false;
+            for (Contacts c : Contacts) {
+                if (c.getFirstName().equals(firstName) && c.getLastName().equals(lastName)) {
+                    contactExists = true;
+                    System.out.println("Contact with the same first name and last name already exists:");
+                    System.out.println(c);
+                    System.out.println("Do you want to update this contact? (Y/N)");
+                    String choice = scanner.nextLine();
+                    if (choice.equalsIgnoreCase("Y")) {
+                        // Update existing contact
+                        c.setAddress(contacts.getAddress());
+                        c.setCity(contacts.getCity());
+                        c.setState(contacts.getState());
+                        c.setEmail(contacts.getEmail());
+                        c.setZip(contacts.getZip());
+                        c.setPhoneNumber(contacts.getPhoneNumber());
+                        System.out.println("Contact updated successfully.");
+                    }
+                    break;
+                }
+            }
+
+            // If contact does not exist, add it to the Address Book
+            if (!contactExists) {
                 System.out.println("Enter Address :");
                 String address = scanner.nextLine();
                 contacts.setAddress(address);
@@ -78,15 +104,18 @@ public class AddressBookSystem extends Contacts {
 
                 Contacts.add(contacts);
                 System.out.println("Person Information has been added successfully");
-                System.out.println("Do you want to add another person? (Y/N)");
-                String choice = scanner.nextLine();
-                if (choice.equalsIgnoreCase("N")) {
-                    addingContacts = false;
-                }
             }
 
+            System.out.println("Do you want to add another person? (Y/N)");
+            String choice = scanner.nextLine();
+            if (choice.equalsIgnoreCase("N")) {
+                addingContacts = false;
+            }
         }
-        public void displayContacts() {
+    }
+
+
+    public void displayContacts() {
 
             if (Contacts.isEmpty()) {
                 System.out.println("Address Book Is Empty");
