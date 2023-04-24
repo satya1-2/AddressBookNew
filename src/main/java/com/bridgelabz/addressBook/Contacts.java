@@ -18,27 +18,47 @@ public class Contacts {
 
         }
 
-        String getName() {
-            return name;
-        }
+    public String getName() {
+        return name;
+    }
 
-        String getSurname() {
-            return surname;
-        }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        String getPhoneNumber() {
-            return phoneNumber;
-        }
+    public String getSurname() {
+        return surname;
+    }
 
-        String getEmail() {
-            return email;
-        }
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
-        String getAddress() {
-            return address;
-        }
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-        @Override
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Override
         public String toString() {
             return "\n\nName: " + getName() + "\nSurname: " + getSurname() + "\nPhone number: " + getPhoneNumber() + "\nEmail: " +
                     getEmail() + "\nAddress: " + getAddress();
