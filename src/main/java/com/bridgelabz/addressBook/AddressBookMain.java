@@ -7,13 +7,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-class AddressBook extends Contacts{
+class AddressBookMain extends Contacts{
 
             private static Scanner in = new Scanner(System.in);
             private static File file = new File("Addresses.txt");
             static List<Contacts> people = new ArrayList<>();
 
-    AddressBook(String name, String surname, String phoneNumber, String email, String address) {
+    AddressBookMain(String name, String surname, String phoneNumber, String email, String address) {
         super(name, surname, phoneNumber, email, address);
     }
 
