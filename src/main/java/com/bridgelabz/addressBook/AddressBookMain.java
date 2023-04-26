@@ -17,37 +17,39 @@ import java.util.List;
 
 
 public class AddressBookMain  {
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws  IOException {
+
         List<NewContact> persons = new ArrayList<>();
         persons.add(new NewContact("Satya", "yadav", "up", "12344", "7065434", "sspra123@gmail"));
         persons.add(new NewContact("kundan", "kumar", "bihar", "12334", "34065434", "kund123@gmail"));
         persons.add(new NewContact("praveen", "singh", "karnataka", "1232344", "7234065434", "pra123@gmail"));
         persons.add(new NewContact("pallavi", "parteti", "pune", "12322344", "723434065434", "pall123@gmail"));
-        System.out.println("writing a file of csv");
-        System.out.println("reading a file of csv");
+        String fileName = "C:src/main/resources/persons.json";
+        Path path = Paths.get(fileName);
 
-        try {
-            FileWriter file = new FileWriter("sample.csv");
-            PrintWriter write = new PrintWriter(file);
-            for (NewContact name : persons) {
-                write.println(name);
-            }
-            write.close();
-        } catch (IOException exe) {
-            System.out.println("Cannot create file");
-            String line = "";
-            String splitBy = ",";
-            try {
-//parsing a CSV file into BufferedReader class constructor
-                BufferedReader br = new BufferedReader(new FileReader("C:\\\\Users\\stya yadav\\Desktop/sample.csv"));
-                while ((line = br.readLine()) != null)   //returns a Boolean value
-                {
-                    String[] newContact = line.split(splitBy);    // use comma as separator
-                    System.out.println("newContact [First Name=" + newContact[0] + ", Last Name=" + newContact[1] + ", state=" + newContact[2] + ", zip=" + newContact[3] + ", phoneNumber= " + newContact[4] + ", email= " + newContact[5] + "]");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+        try (Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+
+            Gson gson = new Gson();
+
+            JsonElement tree = gson.toJsonTree(persons);
+            gson.toJson(tree, writer);
+
         }
-    }}
+
+        System.out.println("persons details  written to file");
+        System.out.println(".....................................");
+        System.out.println("reading the person  details file ");
+        try (Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+
+            Gson gson = new Gson();
+            List<NewContact> person = gson.fromJson(reader,
+                    new TypeToken<List<NewContact>>() {
+                    }.getType());
+
+            person.forEach(System.out::println);
+        }
+    }
+}
 
