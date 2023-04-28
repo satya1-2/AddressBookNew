@@ -1,55 +1,54 @@
 package com.bridgelabz.addressBook;
 
-
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 
-import java.awt.*;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+public class AddressBookMain {
 
+    public static void main(String[] args) throws IOException {
+        AddressBookMain writeIntoJsonDemo = new AddressBookMain();
+        writeIntoJsonDemo.writeIntoJson();
+        writeIntoJsonDemo.readFromJson();
+    }
 
-public class AddressBookMain  {
-
-    public static void main(String[] args) throws  IOException {
-
-        List<NewContact> persons = new ArrayList<>();
-        persons.add(new NewContact("Satya", "yadav", "up", "12344", "7065434", "sspra123@gmail"));
-        persons.add(new NewContact("kundan", "kumar", "bihar", "12334", "34065434", "kund123@gmail"));
-        persons.add(new NewContact("praveen", "singh", "karnataka", "1232344", "7234065434", "pra123@gmail"));
-        persons.add(new NewContact("pallavi", "parteti", "pune", "12322344", "723434065434", "pall123@gmail"));
-        String fileName = "C:src/main/resources/persons.json";
-        Path path = Paths.get(fileName);
+    public void writeIntoJson() throws IOException {
+        Gson gson = new Gson();
+        FileWriter fileWriter = new FileWriter(
+                "C:\\Users\\stya yadav\\IdeaProjects\\AddressBookNew\\src\\main\\resources\\contacts.json");
 
 
-        try (Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+        NewContact contact = new NewContact();
+        contact.setFirstName("Satya");
+        contact.setLastName("yadav");
+        contact.setState("lucknow");
+        contact.setZip("274702");
+        contact.setPhoneNumber("1234562345");
+        contact.setEmail("sspra143@gmail.com");
 
-            Gson gson = new Gson();
+        String json = gson.toJson(contact);
 
-            JsonElement tree = gson.toJsonTree(persons);
-            gson.toJson(tree, writer);
+        fileWriter.write(json);
+        fileWriter.close();
+        System.out.println(json);
 
-        }
+    }
 
-        System.out.println("persons details  written to file");
-        System.out.println(".....................................");
-        System.out.println("reading the person  details file ");
-        try (Reader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+    public void readFromJson() throws FileNotFoundException {
+        Gson gson = new Gson();
+        System.out.println("Reading data from the json");
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(
+                "C:\\Users\\stya yadav\\IdeaProjects\\AddressBookNew\\src\\main\\resources\\contacts.json"));
+        NewContact info = gson.fromJson(bufferedReader, NewContact.class);
+        System.out.println("contact First Name: " + info.getFirstName());
+        System.out.println("contact Last Name:" + info.getLastName());
+        System.out.println("contact state: " + info.getState());
+        System.out.println("contact Zip:" + info.getZip());
+        System.out.println("contact phoneNumber:" + info.getPhoneNumber());
+        System.out.println("contact Email:" + info.getEmail());
 
-            Gson gson = new Gson();
-            List<NewContact> person = gson.fromJson(reader,
-                    new TypeToken<List<NewContact>>() {
-                    }.getType());
-
-            person.forEach(System.out::println);
-        }
     }
 }
-
